@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>
+
+Save your posts
+
+</title>
+ <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<script type="text/javascript">
+
+
+
+var app = angular.module('postserviceApp', []);
+
+app.controller('postserviceCtrl', function ($scope, $http) {
+
+$scope.userId = null;
+
+$scope.id = null;
+
+$scope.title = null;
+
+$scope.body = null;
+
+$scope.postdata = function (userId, id, title, body) {
+
+var data = {
+
+'userId': userId,
+
+'id': id,
+
+'title': title,
+
+'body': body
+
+};
+
+//Call the services
+
+$http.post('https://jsonplaceholder.typicode.com/posts/', JSON.stringify(data)).then(function (response) {
+
+if (response.data)
+
+$scope.msg = "Post Data Submitted Successfully!";
+
+}, function (response) {
+
+$scope.msg = "Service not Exists";
+
+$scope.statusval = response.status;
+
+$scope.statustext = response.statusText;
+
+$scope.headers = response.headers();
+
+});
+
+};
+
+});
+
+</script>
+
+</head>
+
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">WebSiteName</a>
+    </div>
+    <ul class="nav navbar-nav">
+         <li class="active"><a href="./mainpage.html">Home</a></li>
+      <li><a href="./data.html">Posts</a></li>
+      <li><a href="./registerpost.html">Add Post</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div ng-app="postserviceApp" ng-controller="postserviceCtrl">
+
+<div class="container">
+
+user Id : <input ng-model="userId" /><br/><br/>
+
+Id : <input ng-model="id" /><br/><br/>
+
+Title : <input ng-model="title" /><br/><br/>
+
+body : <input ng-model="body" /><br/><br/>
+
+<input type="button" value="Send" ng-click="postdata(userId, id, title, body)" /> <br/><br/>
+
+</div>
+
+<p>Output Message : {{msg}}</p>
+
+<p>StatusCode: {{statusval}}</p>
+
+<p>Status: {{statustext}}</p>
+
+<p>Response Headers: {{headers}}</p>
+
+</div>
+
+</body>
+
+</html>
